@@ -4,3 +4,11 @@
     justify-content: center;
     align-items: center;
 }
+
+.status{
+    margin:2%;
+}
+
+.buttonReset{
+    margin:2%;
+}
