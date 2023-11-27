@@ -3,7 +3,6 @@ import './GameContainer.css'
 import { useState } from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
 
-
 const GameContainer =() =>{
     
     //Se determina con los siguiente useState para quien es el turno.
@@ -12,6 +11,8 @@ const GameContainer =() =>{
     //En la línea que hay a continuación se establece el valor dentro
     //de cada botón o celda.
     const [squares, setSquares] = useState(Array(9).fill(null));
+
+    let statusGame='Start the game';
 
     function calculateWinner (arreglo){
         const lista =[
@@ -38,8 +39,6 @@ const GameContainer =() =>{
         return winPlayer;
     }
 
-    let statusGame;
-
     //Esta función handleClick determina donde se establecen los string X u O, 
     //en el arreglo squares que se maneja desde el useState.
     const handleClick =(i)=>{
@@ -52,6 +51,7 @@ const GameContainer =() =>{
         setXIsNext(!xIsNext);
     }
     
+    //Esta función permite hacer reset (reiniciar) a la informacion de los useStates.
     function handleReset () { 
         setSquares(Array(9).fill(null));
         setXIsNext('X')
@@ -73,14 +73,17 @@ const GameContainer =() =>{
     console.log(squares)
     console.log(winner)
 
+    
     if(winner){
         statusGame = `Winner is ${winner}`;
     } else if(turns === 0){
         statusGame = `No more movements!`;
+    } else if(turns === 9){
+        statusGame = `Start the Game`;
     }else{
         statusGame = xIsNext ? 'Next player is X' : 'Next player is O';
     }
-    
+   
     return(
     <div className='Game'>
         <h1>Three in a Row Game</h1>
@@ -88,7 +91,7 @@ const GameContainer =() =>{
         {
             winner==='X' ? 
             <div className='status' style={{color:'green'}}><b>{statusGame}!</b></div> :
-                winner==='O'?
+            winner==='O' ?
                 <div className='status' style={{color:'#933'}}><b>{statusGame}!</b></div>:
                 <div className='status'>{statusGame}</div>
         }
