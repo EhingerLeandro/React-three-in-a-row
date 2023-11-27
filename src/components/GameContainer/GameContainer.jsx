@@ -12,7 +12,7 @@ const GameContainer =() =>{
     //de cada botón o celda.
     const [squares, setSquares] = useState(Array(9).fill(null));
 
-    let statusGame='Start the game';
+    let statusGame;
 
     function calculateWinner (arreglo){
         const lista =[
