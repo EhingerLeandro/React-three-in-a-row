@@ -86,7 +86,7 @@ const GameContainer =() =>{
    
     return(
     <div className='Game'>
-        <h1>Three in a Row Game</h1>
+        <h3 style={{marginBottom:"15px"}}>Tic Tac Toe Game</h3>
         <BoardContainer board={squares} onClickBoard={handleClick}/>
         {
             winner==='X' ? 
