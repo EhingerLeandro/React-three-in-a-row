@@ -1,12 +1,21 @@
 .App{
     display: flex;
+    flex-direction:column;
     justify-content: center;
+    align-items:center;
 }
-
+.title{
+    margin-Top:20px; 
+    background:#4ad; 
+    padding:10px; 
+    color:#fff; 
+    border:4px solid #28c
+}
 .widerContainer{
-    border-radius: 10%;
+    width:400px;
+    border-radius: 5%;
     padding:2%;
-    margin: 2%;
+    margin: 1%;
     background-color: #6cf;
     display:inline-block;
 }

@@ -3,14 +3,16 @@ import './GameContainer.css'
 import { useState } from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
 
-const GameContainer =() =>{
+const GameContainer =({xIsNext, squares, onReset, onPlay}) =>{
     
     //Se determina con los siguiente useState para quien es el turno.
-    const [xIsNext, setXIsNext] = useState(true);
+    /* La siguiente línea se ha comentado porque se pasó al componente padre 'Game'.
+    const [xIsNext, setXIsNext] = useState(true);*/
 
-    //En la línea que hay a continuación se establece el valor dentro
-    //de cada botón o celda.
-    const [squares, setSquares] = useState(Array(9).fill(null));
+    /*En la línea que hay a continuación se establece el valor dentro
+    de cada botón o celda.*/
+    /*La siguiente línea se ha comentado porque se pasó al componente padre 'Game'.
+    const [squares, setSquares] = useState(Array(9).fill(null));*/
 
     let statusGame;
 
@@ -47,16 +49,10 @@ const GameContainer =() =>{
         }
         let newSquares = squares.slice();
         xIsNext ? newSquares[i] = 'X' : newSquares[i]= 'O';
-        setSquares(newSquares);
-        setXIsNext(!xIsNext);
+        //aquí se activa el prop 'onPlay' que es el mismo 'activePlay'.
+        onPlay(newSquares);
     }
     
-    //Esta función permite hacer reset (reiniciar) a la informacion de los useStates.
-    function handleReset () { 
-        setSquares(Array(9).fill(null));
-        setXIsNext('X')
-    }
-
     // Esta función determina si ya se han usado todos los turnos posibles.
     const remainTurns = (arr)=>{
         let turnForPlay=0; 
@@ -68,11 +64,10 @@ const GameContainer =() =>{
         return 9 - turnForPlay;
     }
 
+    /*Estas variables reciben un valor que al contrastarse con un condicional,
+    permiten determinar que texto será renderizado.*/
     const turns = remainTurns(squares);
     const winner = calculateWinner(squares);
-    console.log(squares)
-    console.log(winner)
-
     
     if(winner){
         statusGame = `Winner is ${winner}`;
@@ -85,19 +80,81 @@ const GameContainer =() =>{
     }
    
     return(
-    <div className='Game'>
-        <h3 style={{marginBottom:"15px"}}>Tic Tac Toe Game</h3>
+    <div className='GameContainer'>
         <BoardContainer board={squares} onClickBoard={handleClick}/>
         {
             winner==='X' ? 
             <div className='status' style={{color:'green'}}><b>{statusGame}!</b></div> :
             winner==='O' ?
                 <div className='status' style={{color:'#933'}}><b>{statusGame}!</b></div>:
-                <div className='status'>{statusGame}</div>
+                <div className='status'style={{textAlign:"center"}}>{statusGame}</div>
         }
-        <button className='btn btn-primary buttonReset' onClick={handleReset}>Reiniciar</button>
+        <button className='btn btn-primary buttonReset' onClick={onReset}>Reiniciar</button>
     </div>
     )
 }
 
-export default GameContainer;
+const Game = () =>{
+    const [history, setHistory] = useState([Array(9).fill(null)]);
+    const [xxIsNext, setXxIsNext] = useState(true);
+    const [currentMove, setCurrentMove]= useState(0);
+    /*La variable currentSquares ayuda a renderizar la partida en la posición 
+    del botón 'move' seleccionado previamente, sin afectar todo el historial.*/
+    let currentSquares = history[currentMove];
+
+    /*Esta función se activa solo cuando se oprime una casilla donde va 'X' u 'O'.*/
+    function activePlay (squa){
+        /*Aquí se resetea el history, teniendo en cuenta el currentMove solo si
+        se ha oprimido una casilla. */
+        const nextHistory = [...history.slice(0, currentMove +1), squa];
+        setHistory(nextHistory);
+        //se le resta 1 porque los arreglos empiezan desde el index 0.
+        setCurrentMove(nextHistory.length - 1);
+        setXxIsNext(!xxIsNext);
+        
+    }
+
+    //Esta función permite hacer reset (reiniciar) a la informacion de los useStates.
+    function handleReset () { 
+        setCurrentMove(0);
+        setHistory([Array(9).fill(null)]);
+        setXxIsNext(true);
+    }
+
+    /*Con esta función se cambia el currentMove afectando la variable 
+    'currentSquares', la cual se envía como una prop de nombre 'squares' 
+    al componente hijo; este a su vez usa esa información para renderizar 
+    los simbolos 'X' y 'O' en el tablero.*/
+    function jumpTo (ind){
+        setCurrentMove(ind);
+        setXxIsNext(ind % 2 ===0);
+    }
+
+    const movements = history.map((item, index) => (
+        index===0 ? <p key={0} className="historyTitle">
+                        Game History
+                    </p>:
+        <li key={index} >
+            <button className="btn btn-outline-dark btn-sm move"
+            onClick={()=>jumpTo(index)}>
+                Move N°{index}
+            </button>
+        </li>
+    ))
+
+    return(
+        <div className="Game">
+            <section>
+                <GameContainer xIsNext={xxIsNext} squares={currentSquares} 
+                onReset={handleReset} onPlay={activePlay}/>
+            </section>
+            <section>
+                <ul type="circle" className="list">
+                    { movements }
+                </ul>
+            </section>
+        </div>
+    )
+}
+
+export default Game;
