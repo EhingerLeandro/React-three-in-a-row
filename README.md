@@ -1,15 +1,9 @@
-=> This is the popular 'tic tac toe' game, **you can test it here**:
+=> This is the popular 'tic tac toe' game. It was developed using html, css, bootstrap, react and firebase.
 
-[https://react-tic-tac-toe-play.netlify.app/](https://react-tic-tac-toe-play.netlify.app/)
-
-------------------------------------------------------------------------
-
-=> This Project is inspired by **the former official react website**:
-
-[https://es.react.dev/learn/tutorial-tic-tac-toe](https://es.react.dev/learn/tutorial-tic-tac-toe)
+**you can test it here**: [https://react-tic-tac-toe-play.netlify.app/](https://react-tic-tac-toe-play.netlify.app/)
 
 ------------------------------------------------------------------------
 
-=> Este es el popular juego 'tres en raya', **lo puedes probar aquí**:  
+=> Este es el popular juego 'tres en raya', para crearlo se utilizó html, css, boostrap, react y firebase.
 
-[https://react-tic-tac-toe-play.netlify.app/](https://react-tic-tac-toe-play.netlify.app/)
+**lo puedes probar aquí**: [https://react-tic-tac-toe-play.netlify.app/](https://react-tic-tac-toe-play.netlify.app/)
